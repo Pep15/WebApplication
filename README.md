@@ -1,6 +1,6 @@
 # DevOps Practical Task WebApplication
 
-This repository contains the solution for a DevOps practical task to assess skills and expertise in the DevOps lifecycle. The task involved setting up both **Build** and **Release ** pipelines, creating Docker images, generating Helm charts, and deploying Kubernetes.
+This repository contains the solution for a DevOps practical task to assess skills and expertise in the DevOps lifecycle. The task involved setting up both **Build** and **Release** **pipelines**, creating Docker images, generating Helm charts, and deploying Kubernetes.
 
 ## Project Overview
 
@@ -15,9 +15,7 @@ The main goal of this task was to build a CI/CD pipeline in **Azure DevOps** tha
 
 Here’s the project structure:
 
-```bash
-├── CD.yml                          
-├── CD.yml                          
+```bash                        
 ├── CD.yml                          
 ├── CI.yml                          
 ├── Dockerfile                      
