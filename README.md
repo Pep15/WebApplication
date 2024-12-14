@@ -1,12 +1,12 @@
 # DevOps Practical Task WebApplication
 
-This repository contains the solution for a DevOps practical task to assess skills and expertise in the DevOps lifecycle. The task involved setting up both **Build** and **Release Pipelines**, Docker image creation, Helm chart generation, and Kubernetes deployment.
+This repository contains the solution for a DevOps practical task to assess skills and expertise in the DevOps lifecycle. The task involved setting up both **Build** and **Release ** pipelines, creating Docker images, generating Helm charts, and deploying Kubernetes.
 
 ## Project Overview
 
 The main goal of this task was to build a CI/CD pipeline in **Azure DevOps** that handles the following:
 
-1. **Source Code Checkout**: Using `checkout: self` to retrieve the latest version of the project.
+1. **Source Code Checkout**: Using `checkout: self` to retrieve the project's latest version.
 2. **Docker Image Build**: Building the Docker image using the provided **Dockerfile** and pushing it to **Docker Hub**.
 3. **Helm Chart Generation**: Creating Helm charts for Kubernetes deployments.
 4. **Release Pipeline**: Deploy the application to Kubernetes environments (Dev and Prod) using Helm, with environment-specific configurations.
@@ -14,27 +14,7 @@ The main goal of this task was to build a CI/CD pipeline in **Azure DevOps** tha
 ## Project Structure
 
 Here’s the project structure:
-├── CD.yml                          
-├── CI.yml                          
-├── Dockerfile                      
-├── k8s                             
-│   └── deploy.yaml                 
-└── webapp                          
-    ├── Chart.yaml                  
-    ├── environment                 
-    │   ├── deployment_dev.yaml     
-    │   ├── deployment_prod.yaml    
-    │   ├── values_dev.yaml         
-    │   └── values_prod.yaml        
-    ├── templates                   
-    │   ├── deployment.yaml        
-    │   ├── hpa.yaml               
-    │   ├── ingress.yaml            
-    │   ├── service.yaml            
-    │   ├── serviceaccount.yaml     
-    │   └── tests                    
-    │       └── test-connection.yaml 
-    └── values.yaml                 
+├── CD.yml ├── CI.yml ├── Dockerfile ├── k8s │ └── deploy.yaml └── webapp ├── Chart.yaml ├── environment │ ├── deployment_dev.yaml │ ├── deployment_prod.yaml │ ├── values_dev.yaml │ └── values_prod.yaml ├── templates │ ├── deployment.yaml │ ├── hpa.yaml │ ├── ingress.yaml │ ├── service.yaml │ ├── serviceaccount.yaml │ └── tests │ └── test-connection.yaml └── values.yaml                 
 
 ## Key Features
 
