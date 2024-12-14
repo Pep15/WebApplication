@@ -11,11 +11,6 @@ The main goal of this task was to build a CI/CD pipeline in **Azure DevOps** tha
 3. **Helm Chart Generation**: Creating Helm charts for Kubernetes deployments.
 4. **Release Pipeline**: Deploy the application to Kubernetes environments (Dev and Prod) using Helm, with environment-specific configurations.
 
-## Project Structure
-
-Here’s the project structure:
-├── CD.yml ├── CI.yml ├── Dockerfile ├── k8s │ └── deploy.yaml └── webapp ├── Chart.yaml ├── environment │ ├── deployment_dev.yaml │ ├── deployment_prod.yaml │ ├── values_dev.yaml │ └── values_prod.yaml ├── templates │ ├── deployment.yaml │ ├── hpa.yaml │ ├── ingress.yaml │ ├── service.yaml │ ├── serviceaccount.yaml │ └── tests │ └── test-connection.yaml └── values.yaml                 
-
 ## Key Features
 
 - **CI/CD Pipelines**: Configured using Azure DevOps with `checkout: self` for code retrieval.
