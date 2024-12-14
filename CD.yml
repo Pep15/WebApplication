@@ -1,0 +1,78 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+trigger:
+- main
+
+pool:
+  name: AgentPip
+
+stages:
+  - stage: Deploy_Dev
+    jobs:
+    - deployment: Helm_Deployment_Dev
+      environment: Dev
+      variables:
+         env: Dev
+      strategy:         
+        runOnce:        
+         deploy:
+          steps:
+          - checkout: self
+            clean: true
+            submodules: true | recursive
+            path: webapp
+            displayName: checkout 
+          - task: HelmDeploy@1
+            displayName: login 
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: 'dev-K8sCluster-dev-1734114162673'
+              namespace: 'dev'
+              command: 'login'
+
+          - task: HelmDeploy@1
+            displayName: 'Deploy Helm Chart dev'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: 'dev-K8sCluster-dev-1734114162673'
+              namespace: 'dev'
+              command: 'install'  
+              chartType: 'Name'  
+              chartName: 'webapp'  
+              releaseName: 'webapp-release-dev' 
+              valueFile: '$(Build.SourcesDirectory)/webapp/environment/values_dev.yaml'  
+  - stage: Deploy_prod
+    jobs:
+    - deployment: Helm_Deployment_prod
+      environment: prod
+      variables:
+         env: prod
+      strategy:         
+        runOnce:        
+         deploy:
+          steps:
+          - checkout: self
+            clean: true
+            submodules: true | recursive
+            path: webapp
+            displayName: checkout 
+          - task: HelmDeploy@1
+            displayName: login 
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: 'prod-K8sCluster-prod-1734114211514'
+              namespace: 'prod'
+              command: 'login'
+          - task: HelmDeploy@1
+            displayName: 'Deploy Helm Chart dev'
+            inputs:
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceConnection: 'prod-K8sCluster-prod-1734114211514'
+              namespace: 'prod'
+              command: 'install'
+              chartType: 'Name'
+              chartName: 'webapp'
+              releaseName: 'webapp-release-pro'
+              valueFile: '$(Build.SourcesDirectory)/webapp/environment/values_pro.yaml'

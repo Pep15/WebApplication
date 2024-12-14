@@ -1,0 +1,67 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+stages:
+- stage: Ci
+  displayName: Build image and run K8s
+  jobs:
+  - job: CI
+    displayName: Build 
+    pool:
+      name: AgentPip
+    steps:
+    - task: CmdLine@2
+      displayName: install Docker azcli 
+      inputs:
+        script: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+          sudo groupadd docker
+          sudo usermod -aG docker ${USER}
+          sudo chmod 666 /var/run/docker.sock
+          sudo systemctl restart docker
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - task: KubectlInstaller@0
+      inputs:
+        kubectlVersion: 'latest'
+    - task: HelmInstaller@1
+      inputs:
+        helmVersionToInstall: 'latest'
+    - task: Docker@2
+      displayName: build and push
+      inputs:
+        containerRegistry: 'Dockerimage'
+        repository: 'pepsi16/WebDot'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: |
+          latest
+          $(Build.BuildId)
+
+    - task: AzureCLI@2
+      displayName: Configure image and K8s cluster
+      inputs:
+        azureSubscription: 'Azure subscription 1(f8b7c5f4-7520-4b75-822c-68d89cc16484)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+             az login --service-principal -u $(CLIENT_ID) -p $(CLINET_SECRET) --tenant $(TENANT_ID)
+             az group create --name K8s-Rg --location "West US 2"
+             az aks create --resource-group K8s-Rg --name K8sCluster --location "West US 2"  --generate-ssh-keys
+             az aks get-credentials --resource-group K8s-Rg --name K8sCluster
+             kubectl create namespace dev
+             kubectl create namespace prod
+    - task: CmdLine@2
+      displayName: Path Environment
+      inputs:
+        script: |
+          cd /home/moath/myagent/_work/_tool/kubectl/1.31.0/x64
+          sudo mv kubectl /usr/local/bin/
+          cd /home/moath/myagent/_work/_tool/helm/3.16.3/x64/linux-amd64
+          sudo mv helm /usr/local/bin/
+                
